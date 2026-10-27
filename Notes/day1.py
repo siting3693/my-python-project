@@ -1,6 +1,6 @@
 #comment
-'docstring'
-"docstring"
+'docstring1'
+"docstring2"
 """
 multiline
 docstring

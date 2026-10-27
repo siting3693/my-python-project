@@ -1,6 +1,6 @@
 #comment
-'docstring'
-"docstring"
+'docstring1'
+"docstring2"
 """
 multiline
 docstring
@@ -2296,7 +2296,7 @@ print(arr)
 
 #Slicing    [start:end:step]  all optional
 print(onedarr[::])
-print(twodarr[1, 1:4])
+print(twodarr[1, 1:4])     #second row, second column to fifth column (exclusive)
 print(twodarr[0:2, 2])
 print(twodarr[0:2, 1:4])   #return 2-d array
 
@@ -2315,8 +2315,8 @@ S - string
 U - unicode string
 """
 
-arr = np.array([1, 2, 3, 4], dtype='i4')  #can define data type and size
-print(arr.dtype)
+arr = np.array([1, 2, 3, 4], dtype='i4')  #can define data type and size(in byte)
+print(arr.dtype)                          #int32 (32 bits)
 
 arr = np.array(['appple', '', 'cherry'], dtype=bool)
 print(arr.dtype)
@@ -2344,13 +2344,13 @@ arr = np.array([1, 2, 3, 4, 5])
 y = arr.view()          #**data / value** of view and original will be affected by each other (shape x)
 arr[0] = 42
 print(arr)
-print(x)
+print(y)
 y[0] = 100
 print(arr)
-print(x)
+print(y)
 
-print(x.base)           #no base (None)
-print(y.base)           #base  attribute refers to the original object
+print(x.base)           #copy no base (None)
+print(y.base)           #view has base  attribute refers to the original object
 
 
 
@@ -2382,7 +2382,7 @@ arr = np.array([1, 2, 3])
 for x in arr:
   print(x)
 
-arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8]])
+arr = np.array([[0, 2, 3, 4], [5, 6, 7, 8]])
 for x in arr:    #print value in 1d arr
   print(x)
 
@@ -2393,7 +2393,10 @@ for x in arr:
 for x in np.nditer(arr):   #or use np.nditer(arr) instead of a lot of for loops
   print(x)
 
-for x in np.nditer(arr, flags=['buffered'], op_dtypes=['S']):     #can change data type using op_dtypes, need to add flags=['buffered'] because it doesnt change data type in the array and need extra space to perform this action
+for x in np.nditer(arr, flags=['buffered'], op_dtypes=['f8']):     #can change data type using op_dtypes, need to add flags=['buffered'] because it doesnt change data type in the array and need extra space to perform this action
+  print(x)
+
+for x in np.nditer(arr, flags=['buffered'], op_dtypes=['bool'], casting='unsafe'):
   print(x)
 
 for x in np.nditer(arr[:, ::2]):     #slicing
@@ -2421,7 +2424,7 @@ Axis 1 is the second number (the size of the second dimension).
 
 arr1 = np.array([1, 2, 3])
 arr2 = np.array([4, 5, 6])
-arr = np.concatenate((arr1, arr2, arr1))   #default is axis = 0
+arr = np.concatenate((arr1, arr2, arr1))   #default is axis = 0 (first dimension of 1d array is column)
 print(arr)
 
 arr1 = np.array([[1, 2], [3, 4]])
@@ -2434,7 +2437,7 @@ print(arr)
 #Stack
 """
 stack always adds a brand-new dimension
-n-d array can stack n-d array with max index of axis = n
+n-d array can stack n-d array with max index of axis (parameter) = n
 Ex[: 1d array
 if axis = 0: treat the 1d array as one of the row in a 2d array
 if axis = 1: treat the 1d array as one of the column in a 2d array
@@ -2442,7 +2445,7 @@ if axis = 1: treat the 1d array as one of the column in a 2d array
 
 arr1 = np.array([1, 2, 3])
 arr2 = np.array([4, 5, 6])
-arr = np.stack((arr1, arr2), axis=0)
+arr = np.stack((arr1, arr2), axis=0)      #first axis of 1d array is row but not column because stack will add one more dimension
 print(arr)
 arr = np.stack((arr1, arr2), axis=1)
 print(arr)
@@ -2456,14 +2459,21 @@ print(arr)
 #hstack, vstack, dstack (maybe add d(1d or 2d), maybe remains)
 arr1 = np.array([1, 2, 3])
 arr2 = np.array([4, 5, 6])
-arr = np.hstack((arr1, arr2))   #stack two arrays horizontally (side by side)
+arr = np.hstack((arr1, arr2))   #hstack is like concatenate with axis column
 print(arr)
 
-arr = np.vstack((arr1, arr2))   #stack two arrays vertically (top to bottom)
+arr = np.vstack((arr1, arr2))   #vstack is like stack with axis row
 print(arr)
 
-arr = np.dstack((arr1, arr2))   #d stands for depth (front to back)
+arr = np.dstack((arr1, arr2))   #dstack stacks along axis 2
 print(arr)
+
+"""
+dstack
+1. if the stacked array dimension < 3, promote it to 3d first ( like (3,) to (1,3,1) and (2,3) to (2,3,1) )
+2. if dimension >= 3, just remains.
+3. then, get the size of result array by adding the the third dimension size number together (like two(1,3,1)dstack to(1,3,2); two(2,3,4,5)dstack to(2,3,8,5))
+"""
 
 
 

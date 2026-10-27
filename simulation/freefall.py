@@ -232,6 +232,7 @@ plotgraph5(3, 1, o3, o3result)
 plotgraph5(3, 2, o4, o4result)
 plotgraph5(3, 3, o5, o5result)
 
+plt.tight_layout()
 plt.suptitle(f"Effect of Drag Coefficient (k) on Falling Motion from {h[0]} m")
 plt.show()
 
