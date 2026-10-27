@@ -3,8 +3,9 @@
 "docstring2"
 """
 multiline
-docstring
+docstring3
 """
+#hihi
 
 
 import sys
