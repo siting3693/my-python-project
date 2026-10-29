@@ -6,6 +6,7 @@ multiline
 docstring3
 """
 #hihi
+#hello
 
 
 import sys
