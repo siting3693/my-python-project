@@ -15,6 +15,7 @@ print(sys.version)
 print("hello", end=" ")
 print('hiiii')
 print("i am",35,"years old.")
+print ("i am",35,"years old.",sep="-")   #sep is separator between each item, default is space
 multiline="""This is the first line.
 This is the second line.
 This is the third line.
